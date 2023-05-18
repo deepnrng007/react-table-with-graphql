@@ -1,12 +1,23 @@
-.table-container {
+.container {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 0.5rem;
-
   margin-top: 10px;
 }
-
+.table-container {
+  border-color: rgb(187, 187, 187);
+  border-width: 1px;
+  border-style: solid;
+  width: 98%;
+  border-radius: 10px;
+}
+.bottom-container {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  padding: 10px;
+}
 .table-container h2 {
   margin: 0;
   text-decoration: underline;
@@ -14,31 +25,38 @@
 
 table {
   font-family: Verdana, Geneva, Tahoma, sans-serif;
-  border-collapse: collapse;
+  border-collapse: separate;
   width: 100%;
+  border-radius: 10px;
+}
+table thead {
+  background-color: red;
 }
 
 table td,
 table th {
-  border: 1px solid #ddd;
   padding: 8px;
 }
 
-table tr:nth-child(even) {
+/* table tr:nth-child(even) {
   background-color: #e9ebec;
-}
+} */
 
-table tr:hover {
-  background-color: #ddd;
+/* table tr:hover {
+  background-color: white;
+} */
+
+table tr {
+  background-color: white;
 }
 
 table th,
 tfoot td {
   padding-top: 12px;
   padding-bottom: 12px;
-  text-align: center;
-  background-color: cadetblue;
-  color: white;
+  text-align: start;
+  background-color: rgb(233, 233, 233);
+  color: black;
 }
 
 .columns_toggle {
@@ -47,5 +65,43 @@ tfoot td {
   gap: 0.5rem;
   background-color: rgb(175, 228, 122);
   padding: 0.5rem;
-  border-radius: 8px;
+}
+.dropdown {
+  border: 1px solid black;
+  padding: 10px;
+  border-radius: 16px;
+}
+.show-span {
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  justify-content: center;
+  align-items: center;
+}
+.pagination {
+  display: inline;
+}
+
+.pagination li {
+  display: inline-block;
+}
+
+.active {
+  font-weight: bold;
+  font-size: 18px;
+  background-color: red;
+  text-decoration: underline;
+}
+.page-item {
+  border-width: 0;
+  background-color: white;
+  padding: 10px;
+  font-size: 20px;
+  color: darkblue;
+}
+.page-link-text {
+  font-size: 18;
+  color: darkblue;
+}
+
+.page-three-dots {
+  font-weight: bold;
 }

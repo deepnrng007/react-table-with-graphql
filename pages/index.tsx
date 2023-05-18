@@ -8,14 +8,26 @@ import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
 const inter = Inter({ subsets: ["latin"] });
 
 const client = new ApolloClient({
-  uri: "http://localhost:4000/graphql",
-  cache: new InMemoryCache(),
+  uri: "https://spacex-production.up.railway.app/",
+  cache: new InMemoryCache({
+    typePolicies: {
+      Query: {
+        fields: {
+          launches: {
+            keyArgs: [],
+            merge(existing = [], incoming) {
+              return [...existing, ...incoming];
+            },
+          },
+        },
+      },
+    },
+  }),
 });
 export default function Home() {
   return (
     <ApolloProvider client={client}>
       <div>
-        <h1>List of Users</h1>
         <Table />
       </div>
     </ApolloProvider>

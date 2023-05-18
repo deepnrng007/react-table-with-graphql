@@ -8,35 +8,45 @@ interface ColumnType {
 
 export const COLUMNS: Column<Data>[] = [
   {
-    Header: "Id",
-    accessor: "id",
+    Header: "Mission ID",
+    accessor: "mission_id",
   },
   {
-    Header: "First Name",
-    accessor: "first_name",
-  },
-  {
-    Header: "Last Name",
-    accessor: "last_name",
-  },
-  {
-    Header: "Date Of Birth",
-    accessor: "date_of_birth",
-  },
-  {
-    Header: "Country",
-    accessor: "country",
-  },
-  {
-    Header: "Phone",
-    accessor: "phone",
-  },
-  {
-    Header: "Email",
-    accessor: "email",
-  },
-  {
-    Header: "Age",
-    accessor: "age",
+    Header: "Mission Name",
+    accessor: "mission_name",
   },
 ];
+// export const COLUMNS: Column<Data>[] = [
+//   {
+//     Header: "Id",
+//     accessor: "id",
+//   },
+//   {
+//     Header: "First Name",
+//     accessor: "first_name",
+//   },
+//   {
+//     Header: "Last Name",
+//     accessor: "last_name",
+//   },
+//   {
+//     Header: "Date Of Birth",
+//     accessor: "date_of_birth",
+//   },
+//   {
+//     Header: "Country",
+//     accessor: "country",
+//   },
+//   {
+//     Header: "Phone",
+//     accessor: "phone",
+//   },
+//   {
+//     Header: "Email",
+//     accessor: "email",
+//   },
+//   {
+//     Header: "Age",
+//     accessor: "age",
+//   },
+// ];

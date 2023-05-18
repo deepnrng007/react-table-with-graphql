@@ -2,18 +2,22 @@ import React, { useMemo, useState } from "react";
 import { Column } from "react-table";
 import { COLUMNS } from "../components/columns";
 import { useQuery } from "@apollo/client";
-import { GET_USERS } from "../queries/queries";
+import { GET_LAUNCES, GET_USERS } from "../queries/queries";
 import TableGrid from "@/components/TableGrid";
 
+// export type Data = {
+//   id: Number;
+//   first_name: string;
+//   last_name: string;
+//   email: string;
+//   date_of_birth: string;
+//   age: Number;
+//   country: string;
+//   phone: string;
+// };
 export type Data = {
-  id: Number;
-  first_name: string;
-  last_name: string;
-  email: string;
-  date_of_birth: string;
-  age: Number;
-  country: string;
-  phone: string;
+  mission_name: string;
+  mission_id: string;
 };
 
 const Table = () => {
@@ -28,7 +32,11 @@ const Table = () => {
       },
     ],
   };
-  const { loading, error, data } = useQuery(GET_USERS, {
+  const { loading, error, data, fetchMore } = useQuery(GET_LAUNCES, {
+    variables: {
+      limit: 10,
+      offset: 0,
+    },
     onCompleted: (response) => handleFetchUsersRequestCallback(response, true),
     onError: (response) => handleFetchUsersRequestCallback(response),
   });
@@ -37,8 +45,10 @@ const Table = () => {
     response: any,
     requestSuccess?: any
   ) => {
+    console.log("response", response.launches);
+
     if (requestSuccess) {
-      setTableData(response.users);
+      setTableData(response.launches);
     } else {
       alert("Some error occuredd");
     }
@@ -46,6 +56,14 @@ const Table = () => {
 
   const gridData = useMemo<Data[]>(() => tableData, [tableData]);
 
+  const fetchMoreData = (offset: Number, limit: Number) => {
+    fetchMore({
+      variables: {
+        limit: gridData.length + 10,
+        offset: gridData.length,
+      },
+    });
+  };
   return (
     <div>
       {loading && <div id="loading-container">Loading....</div>}
@@ -54,6 +72,7 @@ const Table = () => {
           columns={columns}
           data={gridData}
           initialState={initialState}
+          fetchMore={fetchMoreData}
         />
       )}
     </div>
