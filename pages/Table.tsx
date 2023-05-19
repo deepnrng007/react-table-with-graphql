@@ -32,7 +32,7 @@ const Table = () => {
       },
     ],
   };
-  const { loading, error, data, fetchMore } = useQuery(GET_LAUNCES, {
+  const { loading, error, data, fetchMore, refetch } = useQuery(GET_LAUNCES, {
     variables: {
       limit: 10,
       offset: 0,
@@ -73,6 +73,7 @@ const Table = () => {
           data={gridData}
           initialState={initialState}
           fetchMore={fetchMoreData}
+          refetch={refetch}
         />
       )}
     </div>

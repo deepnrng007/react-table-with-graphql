@@ -1,7 +1,7 @@
 import React from "react";
 
 const TableCount = (props) => {
-  const { currentPageIndex, totalPageCount, gotoPage } = props;
+  const { currentPageIndex, totalPageCount, gotoPage, fetchMore } = props;
 
   console.log("ccccc", currentPageIndex, totalPageCount);
   return (
@@ -26,17 +26,19 @@ const TableCount = (props) => {
           </button>
         )}
         {totalPageCount < 6 &&
-          Array.from(Array(totalPageCount).keys()).map((x, i) => (
-            <button
-              type="button"
-              className={`page-item ${
-                currentPageIndex === i + 1 ? "active" : ""
-              }`}
-              onClick={() => gotoPage(i + 1)}
-            >
-              {i + 1}
-            </button>
-          ))}
+          Array.from(Array(totalPageCount).keys()).map((x, i) => {
+            return (
+              <button
+                type="button"
+                className={`page-item ${
+                  currentPageIndex === i ? "active" : ""
+                }`}
+                onClick={() => gotoPage(i)}
+              >
+                {x + 1}
+              </button>
+            );
+          })}
 
         {totalPageCount >= 6 &&
           currentPageIndex < 4 &&
@@ -118,11 +120,11 @@ const TableCount = (props) => {
               }`}
               onClick={() => gotoPage(totalPageCount - 4 + i)}
             >
-              {totalPageCount - 4 + i}
+              {totalPageCount - 3 + i}
             </button>
           ))}
 
-        {currentPageIndex <= totalPageCount - 3 && (
+        {totalPageCount >= 6 && currentPageIndex <= totalPageCount - 3 && (
           <button
             type="button"
             className="page-item"
@@ -131,14 +133,17 @@ const TableCount = (props) => {
               currentPageIndex === totalPageCount || totalPageCount === 0
             }
           >
-            <div className="page-link-text">{totalPageCount - 1}</div>
+            <div className="page-link-text">{totalPageCount}</div>
           </button>
         )}
 
         <button
           type="button"
           className="page-item"
-          onClick={() => gotoPage(currentPageIndex + 1)}
+          onClick={() => {
+            fetchMore(currentPageIndex * 10 + 1, currentPageIndex * 10 + 10);
+            gotoPage(currentPageIndex + 1);
+          }}
           disabled={currentPageIndex === totalPageCount || totalPageCount === 0}
         >
           <div className="page-link-text">{">"}</div>
