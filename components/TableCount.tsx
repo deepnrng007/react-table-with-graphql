@@ -1,7 +1,8 @@
 import React from "react";
 
 const TableCount = (props) => {
-  const { currentPageIndex, totalPageCount, gotoPage, fetchMore } = props;
+  const { currentPageIndex, totalPageCount, gotoPage, fetchMore, pageSize } =
+    props;
 
   console.log("ccccc", currentPageIndex, totalPageCount);
   return (
@@ -33,7 +34,15 @@ const TableCount = (props) => {
                 className={`page-item ${
                   currentPageIndex === i ? "active" : ""
                 }`}
-                onClick={() => gotoPage(i)}
+                onClick={() => {
+                  fetchMore({
+                    variables: {
+                      offset: i * pageSize + 1,
+                      limit: i * pageSize + pageSize,
+                    },
+                  });
+                  gotoPage(i);
+                }}
               >
                 {x + 1}
               </button>
@@ -46,7 +55,15 @@ const TableCount = (props) => {
             <button
               type="button"
               className={`page-item ${currentPageIndex === i ? "active" : ""}`}
-              onClick={() => gotoPage(i)}
+              onClick={() => {
+                fetchMore({
+                  variables: {
+                    offset: i * pageSize + 1,
+                    limit: i * pageSize + pageSize,
+                  },
+                });
+                gotoPage(i);
+              }}
             >
               {x}
             </button>
@@ -73,7 +90,9 @@ const TableCount = (props) => {
               <button
                 type="button"
                 className={`page-item`}
-                onClick={() => gotoPage(currentPageIndex - 1)}
+                onClick={() => {
+                  gotoPage(currentPageIndex - 1);
+                }}
               >
                 {currentPageIndex - 1}
               </button>
@@ -89,7 +108,15 @@ const TableCount = (props) => {
               <button
                 type="button"
                 className={`page-item`}
-                onClick={() => gotoPage(currentPageIndex + 1)}
+                onClick={() => {
+                  fetchMore({
+                    variables: {
+                      offset: (currentPageIndex + 1) * pageSize + 1,
+                      limit: (currentPageIndex + 1) * pageSize + pageSize,
+                    },
+                  });
+                  gotoPage(currentPageIndex + 1);
+                }}
               >
                 {currentPageIndex + 1}
               </button>
@@ -118,7 +145,15 @@ const TableCount = (props) => {
               className={`page-item ${
                 currentPageIndex === totalPageCount - 4 + i ? "active" : ""
               }`}
-              onClick={() => gotoPage(totalPageCount - 4 + i)}
+              onClick={() => {
+                fetchMore({
+                  variables: {
+                    offset: (totalPageCount - 4 + i) * pageSize + 1,
+                    limit: (totalPageCount - 4 + i) * pageSize + pageSize,
+                  },
+                });
+                gotoPage(totalPageCount - 4 + i);
+              }}
             >
               {totalPageCount - 3 + i}
             </button>
@@ -128,7 +163,15 @@ const TableCount = (props) => {
           <button
             type="button"
             className="page-item"
-            onClick={() => gotoPage(totalPageCount - 1)}
+            onClick={() => {
+              fetchMore({
+                variables: {
+                  offset: totalPageCount * pageSize + 1,
+                  limit: totalPageCount * pageSize + pageSize,
+                },
+              });
+              gotoPage(totalPageCount - 1);
+            }}
             disabled={
               currentPageIndex === totalPageCount || totalPageCount === 0
             }

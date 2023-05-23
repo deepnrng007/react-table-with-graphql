@@ -24,7 +24,6 @@ const TableGrid = (props) => {
       columns: columns,
       data: data,
       initialState: initialState,
-      autoResetPageIndex: false,
     },
     useSortBy,
     usePagination
@@ -33,7 +32,7 @@ const TableGrid = (props) => {
   const { pageIndex, pageSize } = state;
 
   const onSort = async (columnName) => {
-    await refetch({ limit: 20, offset: 10, sort: columnName });
+    await refetch({ limit: 10, offset: 0, sort: columnName });
     gotoPage(0);
   };
 
@@ -47,13 +46,11 @@ const TableGrid = (props) => {
                 <tr {...hGroup.getHeaderGroupProps()}>
                   {hGroup.headers.map((header) => (
                     <th
-                      {...header.getHeaderProps(header.getSortByToggleProps())}
-                      // onClick={() => {
-                      //   console.log("clicked", header.id);
-                      //   onSort(header.id);
-
-                      // }}
-                      onClick={() => header.toggleSortBy(!header.isSortedDesc)}
+                      {...header.getHeaderProps()}
+                      onClick={() => {
+                        onSort(header.id);
+                      }}
+                      // onClick={() => header.toggleSortBy(!header.isSortedDesc)}
                     >
                       {header.render("Header")}
                       <span>
@@ -86,9 +83,10 @@ const TableGrid = (props) => {
       <div className="bottom-container">
         <TableCount
           currentPageIndex={pageIndex}
-          totalPageCount={pageCount}
+          totalPageCount={20}
           gotoPage={gotoPage}
           fetchMore={fetchMore}
+          pageSize={pageSize}
         />
         <div>
           <span className="show-span">{"Show:  "}</span>
