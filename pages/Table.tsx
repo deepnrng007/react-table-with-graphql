@@ -1,9 +1,11 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Column } from "react-table";
 import { COLUMNS } from "../components/columns";
 import { useQuery } from "@apollo/client";
 import { GET_LAUNCES, GET_USERS } from "../queries/queries";
 import TableGrid from "@/components/TableGrid";
+import Pagination from "@/components/pagination";
+import BasicTable from "@/components/BasicTable";
 
 // export type Data = {
 //   id: Number;
@@ -21,17 +23,16 @@ export type Data = {
 };
 
 const Table = () => {
-  const [tableData, setTableData] = useState([]);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [pageSize, setPageSize] = useState(10);
   const columns = useMemo<Column<Data>[]>(() => COLUMNS, []);
+  const [pageData, setPageData] = useState({
+    rowData: [],
+    isLoading: false,
+    totalPages: 0,
+    totalPassengers: 150,
+  });
 
-  const initialState = {
-    sortBy: [
-      {
-        id: "id",
-        desc: false,
-      },
-    ],
-  };
   const { loading, error, data, fetchMore, refetch } = useQuery(GET_LAUNCES, {
     variables: {
       limit: 10,
@@ -45,36 +46,40 @@ const Table = () => {
     response: any,
     requestSuccess?: any
   ) => {
-    console.log("response", response.launches);
-
     if (requestSuccess) {
-      setTableData(response.launches);
+      console.log("coming innnnnn", response.launches);
+
+      setPageData({
+        isLoading: false,
+        rowData: response.launches,
+        totalPages: 20,
+        totalPassengers: 200,
+      });
     } else {
       alert("Some error occuredd");
     }
   };
 
-  const gridData = useMemo<Data[]>(() => tableData, [tableData]);
-
-  const fetchMoreData = (offset: Number, limit: Number) => {
-    fetchMore({
-      variables: {
-        limit: gridData.length + 10,
-        offset: gridData.length,
-      },
-    });
-  };
   return (
     <div>
       {loading && <div id="loading-container">Loading....</div>}
       {!loading && !error && (
-        <TableGrid
-          columns={columns}
-          data={gridData}
-          initialState={initialState}
-          fetchMore={fetchMoreData}
-          refetch={refetch}
-        />
+        <>
+          {/* <TableGrid
+            columns={columns}
+            data={pageData.rowData}
+            refetch={refetch}
+            isLoading={pageData.isLoading}
+            pageChangeHandler={pageChangeHandler}
+          /> */}
+          <BasicTable
+            columns={columns}
+            data={pageData.rowData}
+            fetchMore={fetchMore}
+            refetch={refetch}
+            isLoading={pageData.isLoading}
+          />
+        </>
       )}
     </div>
   );
