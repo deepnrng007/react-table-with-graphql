@@ -1,11 +1,10 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { Column } from "react-table";
-import { COLUMNS } from "../components/columns";
+import { COLUMNS } from "../components/tableGrid/columns";
 import { useQuery } from "@apollo/client";
 import { GET_LAUNCES, GET_USERS } from "../queries/queries";
-import TableGrid from "@/components/TableGrid";
+import TableGrid from "@/components/tableGrid";
 import Pagination from "@/components/pagination";
-import BasicTable from "@/components/BasicTable";
 
 // export type Data = {
 //   id: Number;
@@ -37,6 +36,7 @@ const Table = () => {
     variables: {
       limit: 10,
       offset: 0,
+      sort: "asc",
     },
     onCompleted: (response) => handleFetchUsersRequestCallback(response, true),
     onError: (response) => handleFetchUsersRequestCallback(response),
@@ -60,25 +60,55 @@ const Table = () => {
     }
   };
 
+  const onSort = async (columnName: number) => {
+    refetch({ limit: 10, offset: 0, sort: `${columnName}:asc` });
+    setCurrentPage(0);
+  };
+
+  useEffect(() => {
+    fetchMore({
+      variables: {
+        limit: currentPage * 10 + pageSize,
+        offset: currentPage * 10,
+      },
+    });
+  }, [pageSize, currentPage]);
+
   return (
     <div>
       {loading && <div id="loading-container">Loading....</div>}
       {!loading && !error && (
         <>
-          {/* <TableGrid
+          <TableGrid
             columns={columns}
             data={pageData.rowData}
-            refetch={refetch}
             isLoading={pageData.isLoading}
-            pageChangeHandler={pageChangeHandler}
-          /> */}
-          <BasicTable
-            columns={columns}
-            data={pageData.rowData}
-            fetchMore={fetchMore}
-            refetch={refetch}
-            isLoading={pageData.isLoading}
+            onSortChanged={onSort}
           />
+          <div className="bottom-container">
+            <Pagination
+              pageChangeHandler={setCurrentPage}
+              rowsPerPage={pageSize}
+              currentPageIndex={currentPage}
+              totalRows={200}
+            />
+            <div>
+              <span className="show-span">{"Show:  "}</span>
+              <select
+                value={pageSize}
+                onChange={(e) => {
+                  setPageSize(Number(e.target.value));
+                }}
+                className="dropdown"
+              >
+                {[10, 25, 50].map((pageSize) => (
+                  <option key={pageSize} value={pageSize}>
+                    {pageSize} rows
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
         </>
       )}
     </div>

@@ -15,8 +15,8 @@ export const GET_USERS = gql`
   }
 `;
 export const GET_LAUNCES = gql`
-  query GetLaunches($limit: Int!, $offset: Int!) {
-    launches(limit: $limit, offset: $offset) {
+  query GetLaunches($limit: Int!, $offset: Int!, $sort: String!) {
+    launches(limit: $limit, offset: $offset, sort: $sort) {
       mission_name
       mission_id
     }

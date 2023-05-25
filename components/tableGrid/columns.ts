@@ -1,5 +1,5 @@
 import { Column } from "react-table";
-import { Data } from "../pages/Table";
+import { Data } from "../../pages/Table";
 
 interface ColumnType {
   col1: string;

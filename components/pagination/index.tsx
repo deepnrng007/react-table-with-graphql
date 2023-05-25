@@ -1,50 +1,37 @@
 import React, { useState, useEffect } from "react";
 import styles from "./styles.module.css";
-
-const Pagination = (props) => {
+type MyProps = {
+  // using `interface` is also ok
+  pageChangeHandler: any;
+  currentPageIndex: number;
+  rowsPerPage: number;
+  totalRows: number;
+};
+const Pagination = (props: MyProps) => {
   const {
     pageChangeHandler,
     currentPageIndex,
-    totalPageCount,
+
     rowsPerPage,
-    gotoPage,
+    totalRows,
   } = props;
   // Calculating max number of pages
-  const noOfPages = Math.ceil(200 / rowsPerPage);
+  const totalPageCount = Math.ceil(totalRows / rowsPerPage);
 
-  const [currentPage, setCurrentPage] = useState(0);
   // Onclick handlers for the butons
   const onNextPage = () => {
-    setCurrentPage(currentPageIndex + 1);
     pageChangeHandler(currentPageIndex + 1);
   };
   const onPrevPage = () => {
-    setCurrentPage(currentPageIndex - 1);
     pageChangeHandler(currentPageIndex - 1);
   };
-  const onPageSelect = (pageNo: Number) => {
-    setCurrentPage(pageNo);
+  const onPageSelect = (pageNo: number) => {
     pageChangeHandler(pageNo);
   };
 
-  // Disable previous and next buttons in the first and last page
-  // respectively
-  // useEffect(() => {
-  //   if (noOfPages === currentPageIndex) {
-  //     setCanGoNext(false);
-  //   } else {
-  //     setCanGoNext(true);
-  //   }
-  //   if (currentPageIndex === 1) {
-  //     setCanGoBack(false);
-  //   } else {
-  //     setCanGoBack(true);
-  //   }
-  // }, [noOfPages, currentPageIndex]);
-
   return (
     <>
-      {noOfPages > 1 ? (
+      {totalPageCount > 1 ? (
         <div>
           <ul className="pagination">
             <button
@@ -123,7 +110,7 @@ const Pagination = (props) => {
                       onPageSelect(currentPageIndex - 1);
                     }}
                   >
-                    {currentPageIndex - 1}
+                    {currentPageIndex}
                   </button>
 
                   <button
@@ -131,7 +118,7 @@ const Pagination = (props) => {
                     className={`page-item active`}
                     onClick={() => onPageSelect(currentPageIndex)}
                   >
-                    {currentPageIndex}
+                    {currentPageIndex + 1}
                   </button>
 
                   <button
@@ -141,7 +128,7 @@ const Pagination = (props) => {
                       onPageSelect(currentPageIndex + 1);
                     }}
                   >
-                    {currentPageIndex + 1}
+                    {currentPageIndex + 2}
                   </button>
                 </>
               )}

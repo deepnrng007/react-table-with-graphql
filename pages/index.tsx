@@ -16,7 +16,7 @@ const client = new ApolloClient({
           launches: {
             keyArgs: [],
             merge(existing = [], incoming) {
-              return [...existing, ...incoming];
+              return [...incoming];
             },
           },
         },
